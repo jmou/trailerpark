@@ -1,0 +1,3 @@
+#!/bin/bash -e
+
+echo "${1%%\?*}" > inputs/$(date +%Y%m%dT%H%M%S).imdb
