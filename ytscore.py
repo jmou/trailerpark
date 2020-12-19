@@ -10,7 +10,7 @@ DEBUG = True if os.environ.get('DEBUG') else False
 
 
 def parse_published(publishedTime):
-    match = re.fullmatch(r'(\d+) (\w+) ago', publishedTime)
+    match = re.fullmatch(r'(?:Streamed )?(\d+) (\w+) ago', publishedTime)
     num, unit = int(match[1]), match[2]
     unit += '' if unit[-1] == 's' else 's'
     if unit == 'months':
@@ -33,7 +33,7 @@ def score_age(lead_days):
 
 
 def score_candidates(imdb, candidates):
-    published = date.fromisoformat(imdb['datePublished'])
+    published = date(*(int(c) for c in imdb['datePublished'].split('-')))
     for rank, candidate in enumerate(candidates):
         yt_published = parse_published(candidate['publishedTimeText'])
         lead_days = (published - yt_published).days

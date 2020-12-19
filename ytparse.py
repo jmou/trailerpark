@@ -14,6 +14,8 @@ VIDEO_TEXT_FIELDS = (
 
 
 def text(content):
+    if content is None:
+        return ''
     text = content.get('simpleText')
     if text is not None:
         return text
@@ -43,7 +45,7 @@ def search_results(ytInitialData):
     for content in contents:
         video = content.get('videoRenderer')
         if video:
-            result = {field: text(video[field]) for field in VIDEO_TEXT_FIELDS}
+            result = {field: text(video.get(field)) for field in VIDEO_TEXT_FIELDS}
             result['videoId'] = video['videoId']  # Gs--6c7Hn_A
             result['badges'] = list(badges(video.get('badges')))
             result['ownerBadges'] = list(badges(video.get('ownerBadges')))
