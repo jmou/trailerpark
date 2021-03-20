@@ -1,0 +1,13 @@
+#!/bin/bash -ex
+
+./flow/frontend/unit . '' flow/mux.unit > ../knit/gen/plan
+
+cd ../knit
+invocation=$(cargo run -q run-plan gen/plan ../trailerpark/)
+
+./show-output $invocation out/index.html > gen/trailerpark.html
+
+set +x
+echo Open in browser: file://$PWD/gen/trailerpark.html >&2
+./graph-production $invocation | dot -Tsvg > gen/trailerpark.svg
+echo Graph: file://$PWD/gen/trailerpark.svg >&2

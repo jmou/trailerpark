@@ -7,7 +7,7 @@ VIDEO_TEXT_FIELDS = (
     'lengthText',  # 2:24
     'longBylineText',  # Pixar
     'ownerText',  # Pixar
-    'publishedTimeText',  #  9 months ago
+    'publishedTimeText',  # 9 months ago
     'title',
     'viewCountText',  # 4,214,634 views
 )
@@ -39,9 +39,17 @@ def tidy_result(result):
 
 
 def search_results(ytInitialData):
-    contents = (ytInitialData["contents"]["twoColumnSearchResultsRenderer"]
-                ["primaryContents"]["sectionListRenderer"]["contents"][0]
-                ["itemSectionRenderer"]["contents"])
+    primaryContents = (ytInitialData['contents']
+                       ['twoColumnSearchResultsRenderer']['primaryContents'])
+    # YouTube returns results in varying formats.
+    if 'sectionListRenderer' in primaryContents:
+        contents = (primaryContents["sectionListRenderer"]["contents"][0]
+                    ["itemSectionRenderer"]["contents"])
+    else:
+        contents = primaryContents['richGridRenderer']['contents']
+        contents = [item['richItemRenderer']['content']
+                    for item in contents
+                    if 'richItemRenderer' in item]
     for content in contents:
         video = content.get('videoRenderer')
         if video:
@@ -54,5 +62,6 @@ def search_results(ytInitialData):
 
 
 if __name__ == '__main__':
-    results = search_results(json.load(sys.stdin))
+    data = json.load(open('@OUT(yt/scrape.sh,out/json)'))
+    results = search_results(data)
     json.dump(list(results), sys.stdout, indent=4)

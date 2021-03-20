@@ -1,0 +1,9 @@
+process=nested:python3 in/mux.py > out/plan
+in/mux.py=file:flow/mux.py
+in/urls=file:urls
+inref/phase2/store/=unit:flow/store.unit:out/
+inref/phase2/template=file:flow/frontend/template
+inref/phase2/raw/=file:flow/per-trailer/
+inref/phase2/target=inline:makefrag.py
+inref/phase2/converters/=file:flow/template/converters/
+inref/phase2/drivers/=file:flow/template/drivers/
