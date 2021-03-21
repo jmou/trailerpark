@@ -1,0 +1,5 @@
+process=dynamic
+in/=file:modules/stores/ssh/
+in/param/ssh_base=inline:calvin.mou.fo:Public/trailerpark/store
+# Changing this requires re-running all saves.
+in/param/url_base=inline:https://calvin.mou.fo/user/trailerpark/store
