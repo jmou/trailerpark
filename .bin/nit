@@ -8,12 +8,16 @@ if [ $1 = run ]; then
     exec cargo run -q run-plan gen/plan ../trailerpark/ > gen/lastinvocation
 elif [ $1 = push ]; then
     exec rsync -a --info=stats ../knit/gen/repo/ joe@calvin.mou.fo:knit-demo/repo
-elif [ $1 = fetch ]; then
+elif [ $1 = fetch ] || [ $1 = pull ]; then
     exec rsync -a --info=stats joe@calvin.mou.fo:knit-demo/repo/ ../knit/gen/repo
 elif [ $1 = ls ] || [ $1 = cat ]; then
     shift
     cd ../knit
     exec ./show-output $(<gen/lastinvocation) "$@"
+elif [ $1 = graph ]; then
+    cd ../knit
+    ./graph-production $(<gen/lastinvocation) | dot -Tsvg > gen/trailerpark.svg
+    flatpak-spawn --host firefox gen/trailerpark.svg
 elif [ $1 = scp ]; then
     $0 cat $2 > scp.$$
     scp scp.$$ $3
