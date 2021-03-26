@@ -1,5 +1,11 @@
 #!/bin/bash -ex
 
+# XXX get English name
+# XXX parse new imdb? only logged in?
+# XXX modularize template frontend
+# XXX external submodules
+# XXX make knit work from other directories
+
 ./flow/frontend/unit . '' flow/mux.unit > ../knit/gen/plan
 
 cd ../knit
@@ -8,7 +14,8 @@ invocation=$(cargo run -q run-plan gen/plan ../trailerpark/)
 # TODO save to store and symlink. also fix content types
 ./show-output $invocation out/index.html | ssh calvin.mou.fo 'cat > Public/trailerpark/index.html'
 
-set +x
-echo Open in browser: https://calvin.mou.fo/user/trailerpark/ >&2
-./graph-production $invocation | dot -Tsvg > gen/trailerpark.svg
-echo Graph: file://$PWD/gen/trailerpark.svg >&2
+# XXX
+# set +x
+# echo Open in browser: https://calvin.mou.fo/user/trailerpark/ >&2
+# ./graph-production $invocation | dot -Tsvg > gen/trailerpark.svg
+# echo Graph: file://$PWD/gen/trailerpark.svg >&2

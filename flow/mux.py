@@ -9,9 +9,8 @@ for i, url in enumerate(open('in/urls')):
     print(f'_pos={step}-steps')
     print('process=command:chmod +x in/template && '
           'mkdir out/files && '
-          'cp -R in/imdb_url out/files/imdb_url && '
-          'cp -R in/store/ out/files/store/ && '
-          'in/template in/raw in out/files . $(<in/target) in/imdb_url=file:imdb_url in/store/=file:store/ > out/plan')
+          'cp -R in/imdb_url in/store/ in/modules/ out/files/ && '
+          'in/template in/raw in out/files . $(<in/target) in/imdb_url=file:imdb_url in/store/=file:store/ in/modules/=file:modules/ > out/plan')
     for dirpath, _, filenames in os.walk('inref/phase2'):
         for filename in filenames:
             filepath = os.path.join(dirpath, filename)
