@@ -7,3 +7,4 @@ inref/phase2/raw/=file:flow/per-trailer/
 inref/phase2/target=inline:makefrag.py
 inref/phase2/converters/=file:flow/template/converters/
 inref/phase2/drivers/=file:flow/template/drivers/
+inref/phase2/modules/=file:modules/
