@@ -1,0 +1,11 @@
+#!/bin/bash
+
+while read line; do
+    if [[ $line = 'Running job:'* ]]; then
+        [[ -n $inplace ]] && echo -ne '\e[A\e[K'  # move cursor up, kill line
+        inplace=1
+    else
+        unset inplace
+    fi
+    echo "$line"
+done
