@@ -15,7 +15,7 @@ if [ $1 = run ]; then
     cd ../knit
     trap 'trap - INT' INT
     # stderr redirection loses tty coloring.
-    cargo run -q run-plan gen/plan ../trailerpark/ > gen/lastinvocation 2> >(~-/.bin/running-in-place >&2)
+    cargo run -q run-plan gen/plan ../trailerpark/ >> gen/lastinvocation 2> >(~-/.bin/running-in-place >&2)
     rc=$?
     # XXX doesn't actually check for first run
     if ! grep -q 'nit fetch' ~-/.git/hooks/post-merge 2> /dev/null; then
@@ -41,10 +41,10 @@ elif [ $1 = fetch ] || [ $1 = pull ]; then
 elif [ $1 = ls ] || [ $1 = cat ]; then
     shift
     cd ../knit
-    exec ./show-output $(<gen/lastinvocation) "$@"
+    exec ./show-output $(tail -n1 gen/lastinvocation) "$@"
 elif [ $1 = graph ]; then
     cd ../knit
-    ./graph-production $(<gen/lastinvocation) | dot -Tsvg > gen/trailerpark.svg
+    ./graph-production $(tail -n1 gen/lastinvocation) | dot -Tsvg > gen/trailerpark.svg
     flatpak-spawn --host firefox gen/trailerpark.svg
 elif [ $1 = diff ]; then
     shift
@@ -56,7 +56,7 @@ elif [ $1 = scp ]; then
     rm scp.$$
 elif [ $1 = reset ]; then
     set -x
-    rm -rf ../knit/gen/repo/ .git/hooks/pre-push .git/hooks/post-merge .git/hooks/post-checkout
+    rm -rf ../knit/gen/{repo/,lastinvocation} .git/hooks/{pre-push,post-merge,post-checkout}
     git -C ../knit checkout gen/repo
 else
     echo unknown command >&2
