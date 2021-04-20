@@ -1,5 +1,13 @@
 #!/bin/bash
 
+pager() {
+    if type bat &> /dev/null; then
+        git diff-highlight | bat -l diff -p --pager 'less -RFX'
+    else
+        less -FX
+    fi
+}
+
 # XXX for demo
 
 if [ $1 = run ]; then
@@ -38,6 +46,10 @@ elif [ $1 = graph ]; then
     cd ../knit
     ./graph-production $(<gen/lastinvocation) | dot -Tsvg > gen/trailerpark.svg
     flatpak-spawn --host firefox gen/trailerpark.svg
+elif [ $1 = diff ]; then
+    shift
+    cd ../knit
+    cargo run -q diff "$@" | pager
 elif [ $1 = scp ]; then
     $0 cat $2 > scp.$$
     scp scp.$$ $3
