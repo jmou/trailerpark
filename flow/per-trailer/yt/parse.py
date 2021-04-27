@@ -35,7 +35,10 @@ def badges(contents):
 
 
 def tidy_result(result):
-    result['views'] = int(result.pop('viewCountText').split(' ')[0].replace(',', ''))
+    try:
+      result['views'] = int(result.pop('viewCountText').split(' ')[0].replace(',', ''))
+    except Exception:
+      result['views'] = 1
 
 
 def search_results(ytInitialData):
